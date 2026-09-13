@@ -509,6 +509,12 @@ static void sur40_poll(struct input_dev *input)
 		/* packets always contain at least 4 blobs, even if empty */
 		if (packet_blobs > need_blobs)
 			packet_blobs = need_blobs;
+		
+		if (!packet_blobs && need_blobs) {
+			dev_err(sur40->dev, "received no blobs while %d are still expected\n",
+			need_blobs);
+			return;
+		}
 
 		for (i = 0; i < packet_blobs; i++) {
 			need_blobs--;
