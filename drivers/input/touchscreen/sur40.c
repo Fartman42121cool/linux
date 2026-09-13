@@ -510,6 +510,13 @@ static void sur40_poll(struct input_dev *input)
 		if (packet_blobs > need_blobs)
 			packet_blobs = need_blobs;
 
+		if (!packet_blobs && need_blobs) {
+			dev_err(sur40->dev, "received no blobs while %d are still expected\n",
+			need_blobs);
+			return;
+		}
+
+
 		for (i = 0; i < packet_blobs; i++) {
 			need_blobs--;
 			dev_dbg(sur40->dev, "processing blob\n");
